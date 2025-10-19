@@ -87,12 +87,17 @@ private Thread peristiwaThread;
             }
         });
         jPanel1.add(btnKeluar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, 90, -1));
+
+        txtUmur.setEditable(false);
         jPanel1.add(txtUmur, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 340, -1));
+
+        txtHariUlangTahunBerikutnya.setEditable(false);
         jPanel1.add(txtHariUlangTahunBerikutnya, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 340, -1));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel2.setLayout(new java.awt.GridLayout());
+        jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
+        txtAreaPeristiwa.setEditable(false);
         txtAreaPeristiwa.setColumns(20);
         txtAreaPeristiwa.setRows(20);
         jScrollPane1.setViewportView(txtAreaPeristiwa);
