@@ -7,13 +7,21 @@
  *
  * @author LENOVO
  */
-public class PenghitungUmurFrame extends javax.swing.JFrame {
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
+
+public class PenghitungUmurFrame extends javax.swing.JFrame {
+private PenghitungUmurHelper helper;
     /**
      * Creates new form PenghitungUmurFrame
      */
     public PenghitungUmurFrame() {
         initComponents();
+        helper = new PenghitungUmurHelper();
     }
 
     /**
@@ -40,7 +48,6 @@ public class PenghitungUmurFrame extends javax.swing.JFrame {
         getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.setPreferredSize(new java.awt.Dimension(550, 140));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelTanggalLahir.setText("Pilih Tanggal Lahir");
@@ -51,20 +58,63 @@ public class PenghitungUmurFrame extends javax.swing.JFrame {
 
         labelUlangTahun.setText("Hari Ulang Tahun Berikutnya");
         jPanel1.add(labelUlangTahun, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
+
+        dateChooserTanggalLahir.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                dateChooserTanggalLahirPropertyChange(evt);
+            }
+        });
         jPanel1.add(dateChooserTanggalLahir, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 130, -1));
 
         btnHitung.setText("Hitung Umur");
+        btnHitung.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHitungActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnHitung, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, -1, -1));
 
         btnKeluar.setText("Keluar");
+        btnKeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKeluarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnKeluar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, 90, -1));
-        jPanel1.add(txtUmur, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 130, -1));
-        jPanel1.add(txtHariUlangTahunBerikutnya, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 130, -1));
+        jPanel1.add(txtUmur, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 340, -1));
+        jPanel1.add(txtHariUlangTahunBerikutnya, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 340, -1));
 
         getContentPane().add(jPanel1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnHitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHitungActionPerformed
+    Date tanggalLahir = dateChooserTanggalLahir.getDate();
+
+    if (tanggalLahir != null) {
+        LocalDate lahir = tanggalLahir.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate sekarang = LocalDate.now();
+
+        String umur = helper.hitungUmurDetail(lahir, sekarang);
+        txtUmur.setText(umur);
+
+        LocalDate ulangTahunBerikutnya = helper.hariUlangTahunBerikutnya(lahir, sekarang);
+        String hariUlang = helper.getDayOfWeekInIndonesian(ulangTahunBerikutnya);
+        String tanggalUlang = ulangTahunBerikutnya.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        txtHariUlangTahunBerikutnya.setText(hariUlang + " (" + tanggalUlang + ")");
+    }
+    }//GEN-LAST:event_btnHitungActionPerformed
+
+    private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnKeluarActionPerformed
+
+    private void dateChooserTanggalLahirPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateChooserTanggalLahirPropertyChange
+        txtUmur.setText("");
+        txtHariUlangTahunBerikutnya.setText("");
+
+    }//GEN-LAST:event_dateChooserTanggalLahirPropertyChange
 
     /**
      * @param args the command line arguments
